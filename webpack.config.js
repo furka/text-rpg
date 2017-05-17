@@ -40,8 +40,16 @@ module.exports = {
       {
         test: /\.json$/,
         use: 'json-loader'
+      },
+      {
+        test: /\.txt$/,
+        use: 'raw-loader'
       }
     ]
+  },
+
+  node: {
+    fs: 'empty'
   },
 
   plugins: [

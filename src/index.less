@@ -1,3 +1,36 @@
-.hello-world {
-  color: blue;
+@font-size: 16px;
+@spacing: 4px;
+
+html, body {
+  background-color: #191c2b;
+  color: #0f0;
+  font-size: @font-size;
+  padding: 0;
+  margin: 0;
+}
+
+.dialogue {
+  font-family: monospace;
+  cursor: default;
+
+  .text {
+    margin-bottom: @font-size;
+    padding: @spacing;
+  }
+
+  .options {
+    padding: 0;
+    margin: 0;
+
+    li {
+      cursor: pointer;
+      list-style: none;
+      padding: 0 @spacing;
+
+      &:hover {
+        color: #fff;
+        background-color: #000;
+      }
+    }
+  }
 }
