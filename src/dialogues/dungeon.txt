@@ -1,0 +1,17 @@
+##TUTORIAL
+0 Hello world, {{player.name}}. After waking up from a painfully uncomfortable sleep, you get up and look around -> 5
+1 What do you do? [2, 3, 4]
+2 Examine area -> 5
+3 Left -> 6
+4 Right -> 8
+5 You find yourself in a dilapidated corridor, the walls look like ancient abandoned stones. Torches light up the walls around you -> 1
+
+#Room 1
+6 Dank Room -> 7
+7 You go back, the room was too dank -> 1
+
+
+
+#Room 2
+8 Dank meme -> 9
+9 You don't even know how you got here, let's just slowly walk back... -> 1

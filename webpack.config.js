@@ -7,7 +7,10 @@ module.exports = {
     modules: [
       path.resolve('./src'),
       'node_modules'
-    ]
+    ],
+    alias: {
+      'handlebars': 'handlebars/dist/handlebars.js'
+    }
   },
 
   entry: {
@@ -55,7 +58,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './src/index.hbs'
+      template: './src/templates/index.hbs'
     })
   ]
 }

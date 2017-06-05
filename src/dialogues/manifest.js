@@ -1,2 +1,3 @@
 import test from './test.txt';
-export { test }
+import dungeon from './dungeon.txt';
+export { test, dungeon }
