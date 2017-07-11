@@ -1,4 +1,10 @@
 <div class="dialogue">
-  <div class="text"></div>
-  <ul class="options"></ul>
+  <div class="text">{{data.text}}</div>
+  <ul class="options">
+    {{#each data.responses}}
+      <li class="option" choice="{{id}}">
+        > {{text}}
+      </li>
+    {{/each}}
+  </ul>
 </div>

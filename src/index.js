@@ -9,6 +9,12 @@ class Dialogue {
     this.name = name;
     this.player = player;
     dialogue.parse(this.name, data);
+
+    document.addEventListener('click', e => {
+      if (e.target.classList.contains('option')) {
+        this.interact(e.target.getAttribute('choice'));
+      }
+    })
   }
 
   //interact with the dialog, sending it to a specific ID
@@ -16,9 +22,10 @@ class Dialogue {
     let data = dialogue.interact(this.name, this.player.name, id);
     gui.render(data, this.player);
   }
+
 }
 
 let player = new Player('Player 1');
 let app = new Dialogue('test', manifest.dungeon, player.toJSON());
-let gui = new GUI(app.interact.bind(app));
+let gui = new GUI();
 app.interact(0);

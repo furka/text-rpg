@@ -1,80 +1,38 @@
-import optionTemplate  from 'templates/option.hbs';
+import template  from 'templates/index.hbs';
 import handlebars from 'handlebars';
+import Typewriter from 'cool-typewriter';
 const OPTION_PREFIX = '> ';
 
 export default class gui {
-  constructor (handler) {
-    this.handler = handler;
-
-    this.text = document.querySelector('.dialogue > .text');
-    this.options = document.querySelector('.dialogue > .options');
+  constructor () {
+    this.typewriter = new Typewriter();
+    this.skip = this.skip.bind(this);
   }
 
   //render data
   render (data, player) {
-    this.options.innerHTML = '';
+    document.removeEventListener('click', this.skip);
 
-    let responses = data.responses && data.responses.slice();
+    data = JSON.parse(JSON.stringify(data));
 
-    if (responses.length === 0) {
-      responses.push({
+    if (data.responses.length === 0) {
+       data.responses.push({
         text: '…',
         id: null
-      })
+      });
     }
 
-    data.text = this.template(data.text, player);
-
-    this.slowRender(this.text, data.text)
-      .then(() => {
-        let promise = Promise.resolve();
-
-        responses.forEach(response => {
-          response.text = this.template(response.text, player);
-
-          promise = promise.then(() => this.createResponse(response));
-        })
-      });
-  }
-
-  template (text, player) {
-    return handlebars.compile(text)({
+    document.body.innerHTML = template({
+      data: data,
       player: player
     });
+
+    this.typewriter.type(document.body).start();
+
+    document.addEventListener('click', this.skip);
   }
 
-  //creates a response that will call the handler when clicked
-  createResponse (response) {
-    let template = document.createElement('template');
-    template.innerHTML = optionTemplate({
-      text: response.text
-    });
-    let li = template.content.firstChild;
-
-    li.addEventListener('click', () => this.handler(response.id));
-
-    this.options.appendChild(li);
-    return this.slowRender(li, OPTION_PREFIX + response.text);
-  }
-
-  //slowly renders some text, character per character
-  slowRender(el, text, i) {
-    return new Promise(resolve => {
-      if (typeof i !== 'number') {
-        i = 0;
-      }
-
-      el.innerText =  text.slice(0, i) + '|';
-
-      if (i < text.length) {
-        requestAnimationFrame(() => {
-          this.slowRender(el, text, i + 1)
-            .then(() => resolve());
-        })
-      } else {
-        el.innerText = text;
-        resolve();
-      }
-    })
+  skip () {
+    this.typewriter.complete();
   }
 }
