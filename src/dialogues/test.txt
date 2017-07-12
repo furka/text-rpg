@@ -6,7 +6,7 @@
 5 ALL HAIL HYPNOTOAD -> 6
 6 ALL HAIL HYPNOTOAD -> 2
 7 Coffee is the superior choice though [8, 9]
-8 Well ok then... -> 10
+8 Well ok then… -> 10
 9 Do my bidding, machine! -> 99
 10 One HOT coffee coming up! -> 2
 99 Does not compute -> 2
