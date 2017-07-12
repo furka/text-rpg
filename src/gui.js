@@ -23,8 +23,9 @@ export default class gui {
     }
 
     data.text = handlebars.compile(data.text)({player: player});
-    data.responses.forEach(response => {
+    data.responses.forEach((response, i) => {
       response.text = handlebars.compile(response.text)({player: player});
+      response.index = i + 1;
     });
 
     document.body.innerHTML = template({
