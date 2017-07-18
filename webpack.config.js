@@ -41,6 +41,10 @@ module.exports = {
         use: 'handlebars-loader'
       },
       {
+        test: /\.jade$/,
+        use: 'jade-loader'
+      },
+      {
         test: /\.json$/,
         use: 'json-loader'
       },

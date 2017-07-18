@@ -15,16 +15,13 @@ export default class gui {
 
     data = JSON.parse(JSON.stringify(data));
 
-    if (data.responses.length === 0) {
-       data.responses.push({
-        text: '…',
-        id: null
-      });
-    }
-
     data.text = handlebars.compile(data.text)({player: player});
     data.responses.forEach((response, i) => {
-      response.text = handlebars.compile(response.text)({player: player});
+      if (response.text) {
+        response.text = handlebars.compile(response.text)({player: player});
+      } else {
+        response.text = '…';
+      }
       response.index = i + 1;
     });
 

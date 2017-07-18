@@ -1,14 +1,13 @@
 import css from 'index.less';
-import dialogue from 'dialoguejs';
 import * as manifest from 'dialogues/manifest';
+import Dialogue from 'dialogue';
 import GUI from 'gui';
 import Player from 'player';
 
-class Dialogue {
-  constructor (name, data, player) {
-    this.name = name;
+class Game {
+  constructor (template, player) {
     this.player = player;
-    dialogue.parse(this.name, data);
+    this.dialogue = new Dialogue(template)
 
     document.addEventListener('click', e => this._click(e.target));
     document.addEventListener('keydown', e => this._keyPress(e.code));
@@ -45,14 +44,19 @@ class Dialogue {
 
   //interact with the dialog, sending it to a specific ID
   interact (id) {
-    let data = dialogue.interact(this.name, this.player.name, id);
+    try {
+      let data = this.dialogue.interact(id);
 
-    gui.render(data, this.player);
+      gui.render(data, this.player);
+    } catch (e) {
+      this.interact(0);
+      console.error(e);
+    }
   }
 
 }
 
 let player = new Player('Player 1');
-let app = new Dialogue('test', manifest.dungeon, player.toJSON());
+let app = new Game(manifest.dungeon, player.toJSON());
 let gui = new GUI();
 app.interact(0);
