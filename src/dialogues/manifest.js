@@ -1,1 +1,3 @@
-module.exports.dungeon = require('./dungeon.jade')();
+module.exports.dungeon = require('./dungeon.pug')();
+
+console.log(require('./dungeon.pug')())

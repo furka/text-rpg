@@ -41,8 +41,8 @@ module.exports = {
         use: 'handlebars-loader'
       },
       {
-        test: /\.jade$/,
-        use: 'jade-loader'
+        test: /\.pug$/,
+        use: 'pug-loader'
       },
       {
         test: /\.json$/,

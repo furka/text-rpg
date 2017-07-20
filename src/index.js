@@ -1,8 +1,13 @@
 import css from 'index.less';
 import * as manifest from 'dialogues/manifest';
-import Dialogue from 'dialogue';
+import Dialogue from 'rpg-dialogue';
 import GUI from 'gui';
 import Player from 'player';
+
+const CONDITIONS = {
+}
+const ACTIONS = {
+}
 
 class Game {
   constructor (template, player) {
@@ -14,6 +19,11 @@ class Game {
   }
 
   _click (target) {
+    if (gui.typewriter.started) {
+      gui.skip();
+      return;
+    }
+
     if (target.classList.contains('option')) {
       this.pickOption(target);
     }
@@ -45,7 +55,7 @@ class Game {
   //interact with the dialog, sending it to a specific ID
   interact (id) {
     try {
-      let data = this.dialogue.interact(id);
+      let data = this.dialogue.interact(id, CONDITIONS, ACTIONS);
 
       gui.render(data, this.player);
     } catch (e) {
