@@ -5,6 +5,7 @@ d#0 Hello world, {{player.name}}. After waking up from a painfully uncomfortable
       d(next=1) Examine Area
       d(next=3) Left
       d(next=4) Right
+      d(then='GOTO_BRIDGE') Bridge
 
 d#3 Dank room
   d You go back, the room was too dank
@@ -13,5 +14,3 @@ d#3 Dank room
 d#4 Dank meme
   d You don't even know how you got here, let's just slowly walk back…
     d(next=1)
-
-

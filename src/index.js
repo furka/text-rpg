@@ -1,43 +1,48 @@
 import css from 'index.less';
 import * as manifest from 'dialogues/manifest';
-import Dialogue from 'rpg-dialogue';
-import GUI from 'gui';
 import Player from 'player';
+
+import DialogueState from 'states/dialogue';
+
+
 
 const CONDITIONS = {
 }
 const ACTIONS = {
+  GOTO_BRIDGE: () => game.switchState('dialogue', manifest.bridge),
+  GOTO_DUNGEON: () => game.switchState('dialogue', manifest.dungeon)
 }
 
 class Game {
-  constructor (template, player) {
+  constructor (player) {
     this.player = player;
-    this.dialogue = new Dialogue(template)
 
-    document.addEventListener('click', e => this._click(e.target));
-    document.addEventListener('keydown', e => this._keyPress(e.code));
+    this.CONDITIONS = CONDITIONS;
+    this.ACTIONS = ACTIONS;
+
+    document.addEventListener('click', e => this._click(e));
+    document.addEventListener('keydown', e => this._keyPress(e));
   }
 
-  _click (target) {
-    if (gui.typewriter.started) {
-      gui.skip();
-      return;
-    }
+  _click (e) {
+    const target  = e.target;
 
-    if (target.classList.contains('option')) {
+    if (
+      this.currentState.isReadyForInteraction()
+      && target.classList.contains('option')
+    ) {
       this.pickOption(target);
     }
   }
 
-  _keyPress (key) {
-    if (gui.typewriter.started) {
-      gui.skip();
-      return;
-    }
-
+  _keyPress (e) {
+    const key = e.code;
     let choice = (key).match(/^(Digit|Numpad)([0-9])/);
 
-    if (choice) {
+    if (
+      this.currentState.isReadyForInteraction()
+      && choice
+    ) {
       choice = Number(choice[2]) - 1;
       this.pickOption(document.getElementsByClassName('option')[choice]);
     }
@@ -49,24 +54,22 @@ class Game {
       return;
     }
 
-    this.interact(el.getAttribute('choice'));
+    this.currentState.interact(el.getAttribute('choice'));
   }
 
-  //interact with the dialog, sending it to a specific ID
-  interact (id) {
-    try {
-      let data = this.dialogue.interact(id, CONDITIONS, ACTIONS);
+  switchState (state, ...args) {
+    if (this.currentState) {
+      this.currentState.kill();
+    }
 
-      gui.render(data, this.player);
-    } catch (e) {
-      this.interact(0);
-      console.error(e);
+    switch (state) {
+    case 'dialogue':
+      this.currentState = new DialogueState(this, ...args);
+      break;
     }
   }
-
 }
 
 let player = new Player('Player 1');
-let app = new Game(manifest.dungeon, player.toJSON());
-let gui = new GUI();
-app.interact(0);
+let game = new Game(player.toJSON());
+game.switchState('dialogue', manifest.dungeon);
